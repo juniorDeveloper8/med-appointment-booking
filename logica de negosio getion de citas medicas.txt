@@ -1,0 +1,146 @@
+La lógica de negocio es la parte fundamental de tu aplicación, ya que define cómo interactúan los componentes de la aplicación y cómo se resuelven los casos de uso desde el punto de vista de los usuarios. En tu caso, la lógica de negocio debe manejar el flujo de citas médicas, la gestión de horarios de disponibilidad de los médicos, el registro y autenticación de usuarios, y la interacción de los roles (pacientes, doctores, administradores). A continuación te explicaré cómo podrías estructurar la lógica de negocio.
+
+1. Registro de Usuarios
+Los usuarios pueden tener diferentes roles: pacientes, doctores y administradores.
+
+Paciente: Necesita registrarse para poder agendar citas.
+
+Doctor: Necesita registrarse para ofrecer horarios de disponibilidad y recibir citas.
+
+Administrador: Administrar los usuarios y posiblemente los horarios de los doctores.
+
+Flujo de Registro de Usuario:
+El usuario proporciona su nombre, correo electrónico, contraseña y tipo de rol.
+
+Se valida si el correo electrónico ya existe en la base de datos (para evitar duplicados).
+
+Si el usuario es un doctor, se le permitirá agregar su información de especialidad y horarios de disponibilidad (esto será gestionado posteriormente).
+
+Si el usuario es un paciente, no se requiere más información, simplemente se guarda en la base de datos.
+
+2. Autenticación de Usuarios con OAuth2
+El flujo de autenticación se gestiona con Spring Security y OAuth2:
+
+Cuando el usuario (paciente o doctor) ingresa, se autentica usando OAuth2 (por ejemplo, con Google, Facebook, o cualquier proveedor de OAuth2).
+
+Spring Security manejará el flujo de autenticación.
+
+Tras la autenticación, el sistema generará un token de acceso que se almacenará (por ejemplo, en cookies o JWT).
+
+Flujo de Autenticación:
+El usuario intenta ingresar a la aplicación.
+
+Se redirige al proveedor de autenticación de OAuth2 (Google, Facebook, etc.).
+
+El proveedor valida las credenciales y devuelve un token.
+
+El token es procesado por Spring Security, que valida la identidad del usuario y lo redirige al frontend con la información de usuario y el token.
+
+Este proceso de autenticación puede estar presente en cualquier punto de tu aplicación donde un usuario intente acceder a su cuenta o servicios protegidos.
+
+3. Gestión de Horarios de Disponibilidad del Doctor
+La gestión de disponibilidad de los médicos se realiza en base a bloques de tiempo de 30 minutos, como mencionaste anteriormente. Un médico puede agregar su disponibilidad, y un paciente puede ver y elegir entre las citas disponibles.
+
+Flujo de Gestión de Horarios:
+El médico se registra o inicia sesión.
+
+El médico ingresa los horarios de disponibilidad en bloques de 30 minutos en el sistema.
+
+El médico puede establecer un horario regular (por ejemplo, de 9:00 AM a 12:00 PM), o definir bloques de disponibilidad específicos.
+
+La disponibilidad se guarda en la tabla citas con el campo tipo = 'horario_disponible', y se marca como disponible.
+
+Lógica de Disponibilidad:
+Los horarios disponibles se consultan en la tabla citas, donde el tipo de entrada es 'horario_disponible'.
+
+Si el bloque está disponible, se presenta al paciente para agendar la cita.
+
+Si un paciente selecciona un horario disponible, la entrada en la base de datos se convierte en una cita con el tipo 'cita' y se asigna un estado (por ejemplo, confirmada).
+
+4. Agendamiento de Citas por Pacientes
+Cuando un paciente quiere agendar una cita, la lógica de negocio debe garantizar que el horario esté disponible y que el médico no tenga conflictos en su agenda.
+
+Flujo de Agendamiento de Citas:
+El paciente inicia sesión y consulta los horarios disponibles para los médicos.
+
+El sistema consulta los bloques de tiempo disponibles de los médicos (tipo = 'horario_disponible' en la tabla citas).
+
+El paciente selecciona un bloque disponible.
+
+El sistema verifica si el bloque está disponible en tiempo real.
+
+Si está disponible, se asigna como una cita con tipo = 'cita' y estado = 'confirmada'.
+
+Si no está disponible (porque otro paciente ya ha agendado), se presenta un mensaje de error al paciente.
+
+El médico recibe la cita y la puede confirmar o rechazar según su disponibilidad.
+
+Lógica de Validación de Cita:
+Para cada cita, el sistema verifica que no haya solapamientos en los horarios.
+
+El estado de la cita se puede modificar en cualquier momento por parte del médico (confirmar, cancelar, etc.).
+
+5. Estado de la Cita
+La lógica de negocio también debe gestionar el estado de las citas, que puede ser disponible, pendiente, confirmada, cancelada, etc.
+
+Flujo de Estados de Cita:
+Paciente solicita cita: Estado pendiente hasta que el médico confirme.
+
+Médico confirma cita: Estado confirmada.
+
+Médico cancela cita: Estado cancelada.
+
+Paciente cancela cita: Estado cancelada.
+
+Esto se maneja de forma sencilla con actualizaciones en la tabla citas, modificando el campo estado.
+
+6. Roles y Permisos
+El sistema debe manejar las funcionalidades específicas para cada tipo de usuario (paciente, doctor, administrador). Aquí te doy un resumen de los permisos más importantes:
+
+Pacientes:
+
+Ver horarios disponibles.
+
+Solicitar citas.
+
+Consultar sus citas pasadas y futuras.
+
+Doctores:
+
+Definir sus horarios de disponibilidad.
+
+Confirmar o cancelar citas.
+
+Ver la lista de citas programadas.
+
+Administradores:
+
+Ver todos los usuarios (doctores y pacientes).
+
+Gestionar usuarios (editar o eliminar).
+
+Ver y modificar horarios de los doctores (opcionalmente).
+
+7. Notificaciones y Recordatorios
+El sistema debe enviar notificaciones por correo electrónico o mediante mensajes push cuando se realicen acciones críticas como:
+
+Confirmación de cita por parte del médico.
+
+Recordatorio de cita para el paciente.
+
+Notificación de cancelación.
+
+Esto se puede gestionar con un servicio de correo electrónico en Spring, que envíe un mensaje a los usuarios cada vez que ocurra una acción relevante.
+
+En resumen:
+Gestión de usuarios: Registro y autenticación con OAuth2. Los usuarios pueden ser pacientes, doctores o administradores.
+
+Gestión de disponibilidad: Los doctores ingresan sus bloques de disponibilidad de 30 minutos, y los pacientes pueden seleccionar una cita.
+
+Agendamiento de citas: El paciente selecciona una hora disponible, y el sistema valida la disponibilidad antes de confirmar la cita.
+
+Manejo de roles: El sistema tiene diferentes permisos para pacientes, doctores y administradores.
+
+Notificaciones: Se envían correos electrónicos o mensajes para confirmar citas y recordar a los usuarios sobre sus citas.
+
+La lógica de negocio es esencial para proporcionar una experiencia fluida tanto para los pacientes como para los médicos y administradores. Si alguna parte de la lógica no te queda clara, ¡dime y te la explico más a fondo!

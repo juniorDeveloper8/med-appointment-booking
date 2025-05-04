@@ -1,0 +1,16 @@
+public class UsuarioDTO {
+    private Long id;
+    private String nombre;
+    private String email;
+    private String rol; // "PACIENTE", "DOCTOR", "ADMIN"
+    private String especialidad; // solo si es doctor
+}
+public class CitaDTO {
+    private Long id;
+    private Long doctorId;
+    private Long pacienteId;
+    private LocalDateTime inicio;
+    private LocalDateTime fin;
+    private String tipo; // "HORARIO_DISPONIBLE" o "CITA"
+    private String estado; // "DISPONIBLE", "PENDIENTE", "CONFIRMADA", "CANCELADA"
+}

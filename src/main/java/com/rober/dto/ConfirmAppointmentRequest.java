@@ -1,21 +1,18 @@
 package com.rober.dto;
 
+import com.rober.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppointmentInfo {
+public class ConfirmAppointmentRequest {
 
-    private String nameDoctor;
-    private String TypeQuery;
-    private LocalDateTime startDate;
-    private String status;
-
+    private Integer appointmentId;
+    private Integer doctorId;
+    private Status status;
 }

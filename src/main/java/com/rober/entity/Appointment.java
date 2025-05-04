@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,17 +22,17 @@ public class Appointment {
     private Integer id;
 
     private Integer doctorId;
-    private Integer pacienteId;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String Type;
+    private Integer patientId;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private String type;
 
     @Column(columnDefinition = "ENUM")
     private Status status;
 
     @CreationTimestamp
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDate modifiedAt;
+    private LocalDateTime modifiedAt;
 }

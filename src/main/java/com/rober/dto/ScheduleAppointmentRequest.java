@@ -11,11 +11,10 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppointmentInfo {
+public class ScheduleAppointmentRequest {
 
-    private String nameDoctor;
-    private String TypeQuery;
+    private Integer patientId;
+    private Integer doctorId;
     private LocalDateTime startDate;
-    private String status;
-
+    private String typeQuery;
 }

@@ -19,5 +19,5 @@ public interface AppointmentService {
     List<AppointmentInfo> getAppointmentsByUserId(Integer userId);
 
     // Método para obtener una cita por su ID
-    AppointmentInfo getAppointmentById(Integer appointmentId);
+    UserResponse getAppointmentById(Integer appointmentId,Integer userId);
 }

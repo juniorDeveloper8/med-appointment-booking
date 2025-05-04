@@ -37,4 +37,14 @@ public class AppoitmentUtils {
     // ✅ Consulta de citas del paciente o doctor
     public static final String CITAS_LISTADAS_CODE = "009";
     public static final String CITAS_LISTADAS_MSG = "Citas obtenidas correctamente.";
+
+
+    // ❌ Error: No acceso a la cita
+    public static final String CITA_NO_ACCESO_CODE = "010";
+    public static final String CITA_NO_ACCESO_MSG = "El usuario no tiene acceso a esta cita.";
+
+    // ✅ Cita obtenida
+    public static final String CITA_LISTADA_CODE = "011";
+    public static final String CITA_LISTADA_MSG = "Cita obtenida correctamente.";
+
 }

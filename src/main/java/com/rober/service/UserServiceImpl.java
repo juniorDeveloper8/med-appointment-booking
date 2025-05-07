@@ -43,22 +43,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateUser(Integer userId, UserInfo request) {
 
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        User user = repository.findByIdAndStatusTrue(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado o inactivo"));
 
         user.setName(request.getName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setSpecialty(request.getSpecialty());
         user.setRol(request.getRol());
+
         repository.save(user);
 
         return UserResponse.builder()
                 .responseCode(UserUtils.USUARIO_ACTUALIZADO_CODE)
-                .responseMessage(UserUtils.USUARIO_ACTUALIZADO_CODE)
+                .responseMessage(UserUtils.USUARIO_ACTUALIZADO_MSG)
                 .status("ACTUALIZADO")
                 .build();
     }
+
 
     @Override
     public UserInfo getUserById(Integer userId) {
@@ -70,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserInfo> getAllUsers() {
-        List<User> users = repository.findAll();
+        List<User> users = repository.findByStatusTrue();
 
         return users.stream()
                 .map(UserUtils::mapToDto)
@@ -82,12 +84,14 @@ public class UserServiceImpl implements UserService {
         User user = repository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(UserUtils.USUARIO_NO_ENCONTRADO_MSG));
 
-        repository.delete(user);
+        user.setStatus(false);
+        repository.save(user);
 
         return UserResponse.builder()
                 .responseCode(UserUtils.USUARIO_ELIMINADO_CODE)
                 .responseMessage(UserUtils.USUARIO_ELIMINADO_MSG)
-                .status("ELIMINADO")
+                .status("DESACTIVADO")
                 .build();
     }
+
 }

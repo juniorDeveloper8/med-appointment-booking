@@ -25,7 +25,7 @@ public class UserUtils {
     public static final String USUARIO_ERROR_MSG = "Ocurrió un error al procesar la solicitud del usuario.";
 
 
-    // ✅ Método de mapeo estático
+    // ✅ Metodo de mapeo estatico
     public static UserInfo mapToDto(User user) {
         return UserInfo.builder()
                 .id(user.getId())

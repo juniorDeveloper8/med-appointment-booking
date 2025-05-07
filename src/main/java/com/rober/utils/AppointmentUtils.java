@@ -1,6 +1,6 @@
 package com.rober.utils;
 
-public class AppoitmentUtils {
+public class AppointmentUtils {
 
     // ✅ Horario disponible creado (por el doctor)
     public static final String DISPONIBILIDAD_CREADA_CODE = "001";

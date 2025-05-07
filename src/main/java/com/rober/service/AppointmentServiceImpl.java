@@ -6,7 +6,7 @@ import com.rober.entity.User;
 import com.rober.entity.enums.Status;
 import com.rober.repositories.AppointmentRepository;
 import com.rober.repositories.UserRepository;
-import com.rober.utils.AppoitmentUtils;
+import com.rober.utils.AppointmentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +37,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (existingAppointment.isPresent()) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.HORARIO_NO_DISPONIBLE_CODE)
-                    .responseMessage(AppoitmentUtils.HORARIO_NO_DISPONIBLE_MSG)
+                    .responseCode(AppointmentUtils.HORARIO_NO_DISPONIBLE_CODE)
+                    .responseMessage(AppointmentUtils.HORARIO_NO_DISPONIBLE_MSG)
                     .build();
         }
 
@@ -54,8 +54,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         return UserResponse.builder()
-                .responseCode(AppoitmentUtils.CITA_CONFIRMADA_CODE)
-                .responseMessage(AppoitmentUtils.CITA_CONFIRMADA_MSG)
+                .responseCode(AppointmentUtils.CITA_CONFIRMADA_CODE)
+                .responseMessage(AppointmentUtils.CITA_CONFIRMADA_MSG)
                 .build();
     }
 
@@ -66,8 +66,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (optionalAppointment.isEmpty()) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.CITA_NO_ENCONTRADA_CODE)
-                    .responseMessage(AppoitmentUtils.CITA_NO_ENCONTRADA_MSG)
+                    .responseCode(AppointmentUtils.CITA_NO_ENCONTRADA_CODE)
+                    .responseMessage(AppointmentUtils.CITA_NO_ENCONTRADA_MSG)
                     .build();
         }
 
@@ -75,8 +75,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (appointment.getStatus() == Status.CANCELADA || appointment.getStatus() == Status.CONFIRMADA) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.CITA_ESTADO_INVALIDO_CODE)
-                    .responseMessage(AppoitmentUtils.CITA_ESTADO_INVALIDO_MSG)
+                    .responseCode(AppointmentUtils.CITA_ESTADO_INVALIDO_CODE)
+                    .responseMessage(AppointmentUtils.CITA_ESTADO_INVALIDO_MSG)
                     .build();
         }
 
@@ -85,8 +85,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         return UserResponse.builder()
-                .responseCode(AppoitmentUtils.CITA_CANCELADA_CODE)
-                .responseMessage(AppoitmentUtils.CITA_CANCELADA_MSG)
+                .responseCode(AppointmentUtils.CITA_CANCELADA_CODE)
+                .responseMessage(AppointmentUtils.CITA_CANCELADA_MSG)
                 .build();
     }
 
@@ -97,8 +97,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (optionalAppointment.isEmpty()) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.CITA_NO_ENCONTRADA_CODE)
-                    .responseMessage(AppoitmentUtils.CITA_NO_ENCONTRADA_MSG)
+                    .responseCode(AppointmentUtils.CITA_NO_ENCONTRADA_CODE)
+                    .responseMessage(AppointmentUtils.CITA_NO_ENCONTRADA_MSG)
                     .build();
         }
 
@@ -106,8 +106,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (appointment.getStatus() != Status.PENDIENTE) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.CITA_ESTADO_INVALIDO_CODE)
-                    .responseMessage(AppoitmentUtils.CITA_ESTADO_INVALIDO_MSG)
+                    .responseCode(AppointmentUtils.CITA_ESTADO_INVALIDO_CODE)
+                    .responseMessage(AppointmentUtils.CITA_ESTADO_INVALIDO_MSG)
                     .build();
         }
 
@@ -115,12 +115,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         String code = request.getStatus() == Status.CONFIRMADA
-                ? AppoitmentUtils.CITA_CONFIRMADA_CODE
-                : AppoitmentUtils.CITA_CANCELADA_CODE;
+                ? AppointmentUtils.CITA_CONFIRMADA_CODE
+                : AppointmentUtils.CITA_CANCELADA_CODE;
 
         String msg = request.getStatus() == Status.CONFIRMADA
-                ? AppoitmentUtils.CITA_CONFIRMADA_MSG
-                : AppoitmentUtils.CITA_CANCELADA_MSG;
+                ? AppointmentUtils.CITA_CONFIRMADA_MSG
+                : AppointmentUtils.CITA_CANCELADA_MSG;
 
         return UserResponse.builder()
                 .responseCode(code)
@@ -164,8 +164,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         // Si no se encuentra la cita
         if (optionalAppointment.isEmpty()) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.CITA_NO_ENCONTRADA_CODE)
-                    .responseMessage(AppoitmentUtils.CITA_NO_ENCONTRADA_MSG)
+                    .responseCode(AppointmentUtils.CITA_NO_ENCONTRADA_CODE)
+                    .responseMessage(AppointmentUtils.CITA_NO_ENCONTRADA_MSG)
                     .build();
         }
 
@@ -174,7 +174,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         // Verificamos que el usuario tenga acceso a esta cita (que sea doctor o paciente asociado)
         if (!appointment.getDoctorId().equals(userId) && !appointment.getPatientId().equals(userId)) {
             return UserResponse.builder()
-                    .responseCode(AppoitmentUtils.CITA_NO_ACCESO_CODE)
+                    .responseCode(AppointmentUtils.CITA_NO_ACCESO_CODE)
                     .responseMessage("El usuario no tiene acceso a esta cita.")
                     .build();
         }
@@ -190,8 +190,8 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .build();
 
         return UserResponse.builder()
-                .responseCode(AppoitmentUtils.CITA_LISTADA_CODE)
-                .responseMessage(AppoitmentUtils.CITA_LISTADA_MSG)
+                .responseCode(AppointmentUtils.CITA_LISTADA_CODE)
+                .responseMessage(AppointmentUtils.CITA_LISTADA_MSG)
                 .appointmentInfo(appointmentInfo)
                 .build();
     }

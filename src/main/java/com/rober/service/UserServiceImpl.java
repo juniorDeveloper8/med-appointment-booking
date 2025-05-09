@@ -119,36 +119,36 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+//    @Override
+//    public UserResponse deleteUser(Integer userId) {
+//        User user = repository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException(UserUtils.USUARIO_NO_ENCONTRADO_MSG));
+//
+//        if (user.getRol() == Rols.PASIENTE) {
+//            // El PACIENTE puede eliminar su propia cuenta o un ADMIN puede eliminarla
+//            if (currentUserRol != Rols.PASIENTE && currentUserRol != Rols.ADMIN) {
+//                throw new UnsupportedOperationException("Solo un PACIENTE o un ADMIN puede eliminar la cuenta de un PACIENTE.");
+//            }
+//        }
+//
+//        if (user.getRol() == Rols.DOCTOR) {
+//            // Solo un ADMIN puede eliminar la cuenta de un DOCTOR
+//            if (currentUserRol != Rols.ADMIN) {
+//                throw new UnsupportedOperationException("Solo un ADMIN puede eliminar la cuenta de un DOCTOR.");
+//            }
+//        }
+//
+//        user.setStatus(false);
+//        repository.save(user);
+//
+//        return UserResponse.builder()
+//                .responseCode(UserUtils.USUARIO_ELIMINADO_CODE)
+//                .responseMessage(UserUtils.USUARIO_ELIMINADO_MSG)
+//                .status("DESACTIVADO")
+//                .build();
+//    }
+
     @Override
-    public UserResponse deleteUser(Integer userId, Rols currentUserRol) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(UserUtils.USUARIO_NO_ENCONTRADO_MSG));
-
-        if (user.getRol() == Rols.PASIENTE) {
-            // El PACIENTE puede eliminar su propia cuenta o un ADMIN puede eliminarla
-            if (currentUserRol != Rols.PASIENTE && currentUserRol != Rols.ADMIN) {
-                throw new UnsupportedOperationException("Solo un PACIENTE o un ADMIN puede eliminar la cuenta de un PACIENTE.");
-            }
-        }
-
-        if (user.getRol() == Rols.DOCTOR) {
-            // Solo un ADMIN puede eliminar la cuenta de un DOCTOR
-            if (currentUserRol != Rols.ADMIN) {
-                throw new UnsupportedOperationException("Solo un ADMIN puede eliminar la cuenta de un DOCTOR.");
-            }
-        }
-
-        user.setStatus(false);
-        repository.save(user);
-
-        return UserResponse.builder()
-                .responseCode(UserUtils.USUARIO_ELIMINADO_CODE)
-                .responseMessage(UserUtils.USUARIO_ELIMINADO_MSG)
-                .status("DESACTIVADO")
-                .build();
-    }
-
-   /* @Override
     public UserResponse deleteUser(Integer userId) {
         User user = repository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(UserUtils.USUARIO_NO_ENCONTRADO_MSG));
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
                 .responseMessage(UserUtils.USUARIO_ELIMINADO_MSG)
                 .status("DESACTIVADO")
                 .build();
-    }*/
+    }
 
 
     // method of create account

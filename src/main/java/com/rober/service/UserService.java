@@ -15,5 +15,7 @@ public interface UserService {
 
     List<UserInfo> getAllUsers();
 
-    UserResponse deleteUser(Integer userId, Rols currentUserRol);
+//    UserResponse deleteUser(Integer userId, Rols currentUserRol); // metodo listopara verificacion con integracion con spring security
+
+    UserResponse deleteUser(Integer userId);
 }

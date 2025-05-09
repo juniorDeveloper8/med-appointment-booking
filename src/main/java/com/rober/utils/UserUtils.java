@@ -25,17 +25,36 @@ public class UserUtils {
     public static final String USUARIO_ERROR_MSG = "Ocurrió un error al procesar la solicitud del usuario.";
 
 
-    // ✅ Metodo de mapeo estatico
-    public static UserInfo mapToDto(User user) {
+    // ✅ Metodo de mapeo estatico doctor
+    public static UserInfo mapDoctor(User user) {
         return UserInfo.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .rol(user.getRol())
-                .status(user.getStatus())
                 .specialty(user.getSpecialty())
                 .build();
+    }
+
+    public static UserInfo mapPaciente(User user) {
+        return UserInfo.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .build();
+    }
+
+
+    public static UserInfo mapByRol(User user) {
+        switch (user.getRol()) {
+            case DOCTOR:
+                return mapDoctor(user);
+            case PASIENTE:
+                return mapPaciente(user);
+            default:
+                throw new UnsupportedOperationException("No hay mapeo definido para el rol: " + user.getRol());
+        }
     }
 
 }

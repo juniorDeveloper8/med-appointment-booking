@@ -2,6 +2,7 @@ package com.rober.service;
 
 import com.rober.dto.UserInfo;
 import com.rober.dto.UserResponse;
+import com.rober.entity.enums.Rols;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface UserService {
 
     List<UserInfo> getAllUsers();
 
-    UserResponse deleteUser(Integer userId);
+    UserResponse deleteUser(Integer userId, Rols currentUserRol);
 }
